@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Spiral Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1e 100%);
+            overflow: hidden;
+        }
+
+        .fibonacci-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            animation: rotate 20s linear infinite;
+        }
+
+        .square {
+            position: absolute;
+            border: 2px solid rgba(255, 215, 0, 0.6);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.05) 100%);
+            animation: pulse 3s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+
+        /* Fibonacci squares positioned according to the spiral */
+        .square-1 {
+            width: 10px;
+            height: 10px;
+            bottom: 50%;
+            right: 50%;
+            animation-delay: 0s;
+        }
+
+        .square-2 {
+            width: 10px;
+            height: 10px;
+            bottom: 50%;
+            left: 50%;
+            animation-delay: 0.2s;
+        }
+
+        .square-3 {
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            animation-delay: 0.4s;
+        }
+
+        .square-4 {
+            width: 30px;
+            height: 30px;
+            top: 50%;
+            right: 50%;
+            margin-top: -10px;
+            animation-delay: 0.6s;
+        }
+
+        .square-5 {
+            width: 50px;
+            height: 50px;
+            bottom: 50%;
+            right: 50%;
+            margin-right: -10px;
+            margin-bottom: -30px;
+            animation-delay: 0.8s;
+        }
+
+        .square-6 {
+            width: 80px;
+            height: 80px;
+            bottom: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-bottom: -30px;
+            animation-delay: 1s;
+        }
+
+        .square-7 {
+            width: 130px;
+            height: 130px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -20px;
+            animation-delay: 1.2s;
+        }
+
+        .square-8 {
+            width: 210px;
+            height: 210px;
+            top: 50%;
+            right: 50%;
+            margin-right: -10px;
+            margin-top: -20px;
+            animation-delay: 1.4s;
+        }
+
+        /* Quarter circles forming the spiral */
+        .spiral-arc {
+            position: absolute;
+            border: 3px solid transparent;
+            border-top-color: #ffd700;
+            border-right-color: #ffd700;
+            border-radius: 0 100% 0 0;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 10px #ffd700);
+        }
+
+        .arc-1 {
+            width: 10px;
+            height: 10px;
+            bottom: 50%;
+            right: 50%;
+            animation: draw 2s ease-out forwards, glow 2s ease-in-out infinite alternate;
+        }
+
+        .arc-2 {
+            width: 10px;
+            height: 10px;
+            bottom: 50%;
+            left: 50%;
+            transform: rotate(90deg);
+            border-radius: 0 100% 0 0;
+            animation: draw 2s ease-out 0.5s forwards, glow 2s ease-in-out infinite alternate;
+            animation-delay: 0.5s, 0s;
+        }
+
+        .arc-3 {
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            transform: rotate(180deg);
+            border-radius: 0 100% 0 0;
+            animation: draw 2s ease-out 1s forwards, glow 2s ease-in-out infinite alternate;
+            animation-delay: 1s, 0s;
+        }
+
+        .arc-4 {
+            width: 30px;
+            height: 30px;
+            top: 50%;
+            right: 50%;
+            margin-top: -10px;
+            transform: rotate(270deg);
+            border-radius: 0 100% 0 0;
+            animation: draw 2s ease-out 1.5s forwards, glow 2s ease-in-out infinite alternate;
+            animation-delay: 1.5s, 0s;
+        }
+
+        .arc-5 {
+            width: 50px;
+            height: 50px;
+            bottom: 50%;
+            right: 50%;
+            margin-right: -10px;
+            margin-bottom: -30px;
+            transform: rotate(0deg);
+            border-radius: 0 100% 0 0;
+            animation: draw 2s ease-out 2s forwards, glow 2s ease-in-out infinite alternate;
+            animation-delay: 2s, 0s;
+        }
+
+        .arc-6 {
+            width: 80px;
+            height: 80px;
+            bottom: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-bottom: -30px;
+            transform: rotate(90deg);
+            border-radius: 0 100% 0 0;
+            animation: draw 2s ease-out 2.5s forwards, glow 2s ease-in-out infinite alternate;
+            animation-delay: 2.5s, 0s;
+        }
+
+        .arc-7 {
+            width: 130px;
+            height: 130px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -20px;
+            transform: rotate(180deg);
+            border-radius: 0 100% 0 0;
+            animation: draw 2s ease-out 3s forwards, glow 2s ease-in-out infinite alternate;
+            animation-delay: 3s, 0s;
+        }
+
+        .arc-8 {
+            width: 210px;
+            height: 210px;
+            top: 50%;
+            right: 50%;
+            margin-right: -10px;
+            margin-top: -20px;
+            transform: rotate(270deg);
+            border-radius: 0 100% 0 0;
+            animation: draw 2s ease-out 3.5s forwards, glow 2s ease-in-out infinite alternate;
+            animation-delay: 3.5s, 0s;
+        }
+
+        /* Connecting spiral line */
+        .spiral-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 340px;
+            height: 340px;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            opacity: 0;
+            animation: fadeIn 4s ease-out 4s forwards, rotate 30s linear infinite;
+        }
+
+        .center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            background: #ffd700;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Number labels */
+        .fib-number {
+            position: absolute;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: rgba(255, 215, 0, 0.7);
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .num-1 { bottom: 50%; right: 50%; margin-bottom: 15px; margin-right: 15px; animation-delay: 0.5s; }
+        .num-2 { bottom: 50%; left: 50%; margin-bottom: 15px; margin-left: 15px; animation-delay: 1s; }
+        .num-3 { top: 50%; left: 50%; margin-top: 25px; margin-left: 25px; animation-delay: 1.5s; }
+        .num-4 { top: 50%; right: 50%; margin-top: 35px; margin-right: 35px; animation-delay: 2s; }
+        .num-5 { bottom: 50%; right: 50%; margin-bottom: 60px; margin-right: 60px; animation-delay: 2.5s; }
+        .num-6 { bottom: 50%; left: 50%; margin-bottom: 95px; margin-left: 95px; animation-delay: 3s; }
+        .num-7 { top: 50%; left: 50%; margin-top: 145px; margin-left: 145px; animation-delay: 3.5s; }
+        .num-8 { top: 50%; right: 50%; margin-top: 225px; margin-right: 225px; animation-delay: 4s; }
+
+        /* Animations */
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(255, 215, 0, 0.1);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(255, 215, 0, 0.2);
+            }
+        }
+
+        @keyframes draw {
+            from {
+                opacity: 0;
+                border-top-color: transparent;
+                border-right-color: transparent;
+            }
+            to {
+                opacity: 1;
+                border-top-color: #ffd700;
+                border-right-color: #ffd700;
+            }
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px #ffd700); }
+            to { filter: drop-shadow(0 0 15px #ffd700) drop-shadow(0 0 25px #ff8c00); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Particle effects */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .p1 { top: 20%; left: 20%; animation: float 4s ease-in-out infinite; animation-delay: 0s; }
+        .p2 { top: 80%; left: 80%; animation: float 5s ease-in-out infinite; animation-delay: 1s; }
+        .p3 { top: 20%; left: 80%; animation: float 6s ease-in-out infinite; animation-delay: 2s; }
+        .p4 { top: 80%; left: 20%; animation: float 4.5s ease-in-out infinite; animation-delay: 0.5s; }
+
+        @keyframes float {
+            0%, 100% { 
+                opacity: 0; 
+                transform: translateY(0) scale(0); 
+            }
+            50% { 
+                opacity: 0.8; 
+                transform: translateY(-20px) scale(1); 
+            }
+        }
+
+        /* Title */
+        .title {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Courier New', monospace;
+            color: #ffd700;
+            font-size: 24px;
+            letter-spacing: 4px;
+            opacity: 0;
+            animation: fadeIn 2s ease-out 5s forwards;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .subtitle {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Courier New', monospace;
+            color: rgba(255, 215, 0, 0.6);
+            font-size: 14px;
+            opacity: 0;
+            animation: fadeIn 2s ease-out 5.5s forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="fibonacci-container">
+        <!-- Squares -->
+        <div class="square square-1"></div>
+        <div class="square square-2"></div>
+        <div class="square square-3"></div>
+        <div class="square square-4"></div>
+        <div class="square square-5"></div>
+        <div class="square square-6"></div>
+        <div class="square square-7"></div>
+        <div class="square square-8"></div>
+
+        <!-- Spiral Arcs -->
+        <div class="spiral-arc arc-1"></div>
+        <div class="spiral-arc arc-2"></div>
+        <div class="spiral-arc arc-3"></div>
+        <div class="spiral-arc arc-4"></div>
+        <div class="spiral-arc arc-5"></div>
+        <div class="spiral-arc arc-6"></div>
+        <div class="spiral-arc arc-7"></div>
+        <div class="spiral-arc arc-8"></div>
+
+        <!-- Center -->
+        <div class="center-dot"></div>
+        <div class="spiral-line"></div>
+
+        <!-- Fibonacci Numbers -->
+        <div class="fib-number num-1">1</div>
+        <div class="fib-number num-2">1</div>
+        <div class="fib-number num-3">2</div>
+        <div class="fib-number num-4">3</div>
+        <div class="fib-number num-5">5</div>
+        <div class="fib-number num-6">8</div>
+        <div class="fib-number num-7">13</div>
+        <div class="fib-number num-8">21</div>
+
+        <!-- Particles -->
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+    </div>
+
+    <div class="title">FIBONACCI</div>
+    <div class="subtitle">1 1 2 3 5 8 13 21...</div>
+</body>
+</html>
